@@ -32,10 +32,10 @@
                                 <tr>
                                     <th
                                         class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b text-xxs tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                        Nama Guru</th>
+                                        Tahun Pelajaran</th>
                                     <th
-                                        class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b text-xxs tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                        L/P</th>
+                                        class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b text-xxs tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                        Nama Guru</th>
                                     <th
                                         class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b text-xxs tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                         Action</th>
@@ -46,19 +46,19 @@
                                     <tr>
                                         <td
                                             class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                            <div class="flex px-2 py-1">
-                                                <div class="flex flex-col justify-center">
-                                                    <h6 class="mb-0 text-sm leading-normal">
-                                                        {{ $jadwal->nama_guru }}
-                                                    </h6>
-                                                </div>
-                                            </div>
+                                            <p class="mb-0 text-xs font-semibold leading-tight">
+                                                {{ $jadwal->tahunPelajaran->tahun }}
+                                            </p>
                                         </td>
                                         <td
                                             class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                            <p class="mb-0 text-xs font-semibold leading-tight">
-                                                {{ $jadwal->jenis_kelamin }}
-                                            </p>
+                                            <div class="flex px-2 py-1">
+                                                <div class="flex flex-col justify-center">
+                                                    <h6 class="mb-0 text-sm leading-normal">
+                                                        {{ $jadwal->guru->nama_guru }}
+                                                    </h6>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td
                                             class="p-2 align-middle text-center bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -66,16 +66,6 @@
 
 
                                                 <!-- Tombol Show -->
-                                                <a href=""
-                                                    class="inline-flex items-center justify-center text-gray-500 hover:text-gray-800 transition">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        class="w-5 h-5">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                        <circle cx="12" cy="12" r="3" />
-                                                    </svg>
-                                                </a>
 
 
                                                 <!-- Tombol Edit -->
@@ -89,6 +79,18 @@
                                                             d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2" />
                                                     </svg>
                                                 </a>
+
+                                                <a href="{{ route('jadwal.show', $jadwal->id) }}"
+                                                    class="inline-flex items-center justify-center text-gray-500 hover:text-gray-800 transition">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        class="w-5 h-5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </a>
+
 
                                                 <!-- Tombol Hapus -->
                                                 <form action="{{ route('jadwal.destroy', $jadwal->id) }}" method="POST"

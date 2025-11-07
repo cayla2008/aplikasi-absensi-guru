@@ -88,6 +88,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/jadwal/tambah-jadwal', [JadwalController::class, 'create'])->name('jadwal.create');
+    Route::get('/jadwal/detail-jadwal/{id}', [JadwalController::class, 'show'])->name('jadwal.show');
     Route::post('/jadwal/store-jadwal', [JadwalController::class, 'store'])->name('jadwal.store');
     Route::get('/jadwal/{id}/edit', [JadwalController::class, 'edit'])->name('jadwal.edit');
     Route::put('/jadwal/{id}/update', [JadwalController::class, 'update'])->name('jadwal.update');

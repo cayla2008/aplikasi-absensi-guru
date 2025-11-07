@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
     <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
-    <title>{{ Auth::user()->role === "admin" ? "Sistem Manajemen Absensi Guru" : "Absensi Guru" }}</title>
+    <title>{{ Auth::user()->role === 'admin' ? 'Sistem Manajemen Absensi Guru' : 'Absensi Guru' }}</title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Font Awesome Icons -->
@@ -49,6 +49,11 @@
     <!-- main script file  -->
     <script src="{{ asset('argon-dashboard-tailwind-1.0.1/build/assets/js/argon-dashboard-tailwind.js?v=1.0.1') }}" async>
     </script>
+
+    {{-- CARD KANAN --}}
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    @stack('scripts')
 </body>
 
 </html>

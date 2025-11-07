@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jadwal;
 use App\Models\Guru;
-use App\Models\TahunPelajaran;
+use App\Models\Jadwal;
+use App\Models\Jam;
+use App\Models\Kelas;
 use App\Models\MataPelajaran;
+use App\Models\TahunPelajaran;
 use Illuminate\Http\Request;
 
 class JadwalController extends Controller
@@ -15,7 +17,7 @@ class JadwalController extends Controller
      */
     public function index()
     {
-        $jadwals = Jadwal::all();
+        $jadwals = Jadwal::with(['guru', 'tahunPelajaran'])->get();
 
         return view('jadwal.index', compact('jadwals'));
     }
@@ -25,83 +27,111 @@ class JadwalController extends Controller
      */
     public function create()
     {
-    
-    $gurus = Guru::all();
-    $tahunPelajarans = TahunPelajaran::all();
-    $mataPelajarans = MataPelajaran::all();
 
-    return view('jadwal.create', compact('gurus', 'tahunPelajarans', 'mataPelajarans'));
+        $gurus = Guru::all();
+        $tahunPelajarans = TahunPelajaran::all();
+        $mataPelajarans = MataPelajaran::all();
+        $kelas = Kelas::all();
+        $jams = Jam::all();
+
+        return view('jadwal.create', compact('gurus', 'tahunPelajarans', 'mataPelajarans', 'kelas', 'jams'));
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        try {
         $request->validate([
             'guru_id' => 'required|exists:gurus,id',
-            'jenis_kelamin' => 'required',
-            
+            'tahun_pelajaran_id' => 'required|exists:tahun_pelajaran,id',
+            'kelas_id.*' => 'required|exists:kelas,id',
+            'mata_pelajaran_id.*' => 'required|exists:mata_pelajaran,id',
         ]);
 
-        Jadwal::create([
+        $jadwal = Jadwal::create([
             'guru_id' => $request->guru_id,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            
+            'tahun_pelajaran_id' => $request->tahun_pelajaran_id,
         ]);
 
-            return redirect()->route('jadwal.index')->with('success', 'Sukses menambahkan data jadwal');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+        // Count how many detail sets we have
+        $count = count($request->kelas_id);
+
+        for ($i = 0; $i < $count; $i++) {
+            $jadwal->details()->create([
+                'kelas_id' => $request->kelas_id[$i],
+                'mata_pelajaran_id' => $request->mata_pelajaran_id[$i],
+                'jam_mulai_id' => $request->jam_mulai_id[$i] ?? null,
+                'jam_selesai_id' => $request->jam_selesai_id[$i] ?? null,
+                'hari' => $request->hari[$i] ?? null,
+            ]);
         }
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $jadwal = Jadwal::with(['guru', 'tahunPelajaran', 'details.mataPelajaran', 'details.kelas', 'details.jamMulai', 'details.jamSelesai'])
+            ->findOrFail($id);
+
+        return view('jadwal.detail', compact('jadwal'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $jadwal = Jadwal::findOrFail($id);
+        // Ambil jadwal utama
+        $jadwal = Jadwal::with('details')->findOrFail($id);
+
+        // Data untuk dropdown
         $gurus = Guru::all();
         $tahunPelajarans = TahunPelajaran::all();
         $mataPelajarans = MataPelajaran::all();
+        $kelas = Kelas::all();
+        $jams = Jam::all();
 
-    return view('jadwal.edit', compact('jadwal', 'gurus', 'tahunPelajarans', 'mataPelajarans'));
+        return view('jadwal.edit', compact('jadwal', 'gurus', 'tahunPelajarans', 'mataPelajarans', 'kelas', 'jams'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        try {
-            $request->validate([
-                'guru_id' => 'required|exists:gurus,id',
-                'jenis_kelamin' => 'required|string|max:255',
-                
-            ]);
+        // Validasi input
+        $request->validate([
+            'guru_id' => 'required|exists:gurus,id',
+            'tahun_pelajaran_id' => 'required|exists:tahun_pelajaran,id',
+            'details.*.kelas_id' => 'required|exists:kelas,id',
+            'details.*.mata_pelajaran_id' => 'required|exists:mata_pelajaran,id',
+        ]);
 
-            $jadwal = Jadwal::findOrFail($id);
-            $jadwal->update([
-                'guru_id' => $request->guru_id,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                
-            ]);
+        // Ambil jadwal
+        $jadwal = Jadwal::findOrFail($id);
 
-            return redirect()->route('jadwal.index')->with('success', 'Berhasil mengedit data jadwal');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+        // Update jadwal utama
+        $jadwal->update([
+            'guru_id' => $request->guru_id,
+            'tahun_pelajaran_id' => $request->tahun_pelajaran_id,
+        ]);
+
+        // Hapus detail lama
+        $jadwal->details()->delete();
+
+        // Tambahkan detail baru
+        foreach ($request->details as $detail) {
+            if (empty($detail['mata_pelajaran_id']) || empty($detail['kelas_id'])) {
+                continue;
+            }
+
+            $jadwal->details()->create([
+                'mata_pelajaran_id' => $detail['mata_pelajaran_id'],
+                'kelas_id' => $detail['kelas_id'],
+                'hari' => $detail['hari'] ?? null,
+                'jam_mulai_id' => $detail['jam_mulai_id'] ?? null,
+                'jam_selesai_id' => $detail['jam_selesai_id'] ?? null,
+            ]);
         }
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui!');
     }
 
     /**
