@@ -11,6 +11,7 @@ use App\Http\Controllers\RuangController;
 use App\Http\Controllers\JamController;
 use App\Http\Controllers\TahunPelajaranController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\AbsenController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +101,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth', 'role:guru'])->prefix('guru')->group(function () {
     
     Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('guru.dashboard');
+
+    
+    Route::get('/guru/absen', [AbsenController::class, 'index'])->name('absen.index');
+    Route::post('/guru/absen/datang', [AbsenController::class, 'absenDatang'])->name('absen.datang');
+    Route::post('/guru/absen/pulang', [AbsenController::class, 'absenPulang'])->name('absen.pulang');
 
 });
 
