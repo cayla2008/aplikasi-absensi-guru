@@ -14,8 +14,15 @@ return new class extends Migration
         Schema::create('ruang', function (Blueprint $table) {
             $table->id();
             $table->string('nama_ruang');
+            $table->unsignedBigInteger('kelas_id'); 
             $table->string('lokasi', 45)->nullable();
             $table->timestamps();
+
+            // foreign key
+            $table->foreign('kelas_id')
+                ->references('id')
+                ->on('kelas')
+                ->onDelete('cascade');
         });
     }
 

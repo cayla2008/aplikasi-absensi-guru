@@ -1,79 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="w-full px-6 py-6 mx-auto">
+    <div class="">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+            Absensi Guru - Jadwal Hari Ini ({{ $hariIni }})
+        </h2>
 
-        <h6 class="text-2xl font-extrabold text-white mb-6">Absen Guru</h6>
-
-        {{-- GRID 2 KOLOM UNTUK DATANG & PULANG --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            {{-- KOTAK ABSEN DATANG --}}
-            <div class="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center justify-center">
-                <h6 class="text-xl font-bold text-slate-700 mb-4">Absen Datang</h6>
-
-                {{-- Info Guru --}}
-                <p class="text-slate-600 mb-2 text-sm">Nama: <span class="font-semibold">{{ Auth::user()->name }}</span></p>
-
-                {{-- Jam Sekarang --}}
-                <p class="text-slate-500 mb-4 text-sm">
-                    Waktu Sekarang: <span id="clockIn" class="font-semibold"></span>
-                </p>
-
-                {{-- Tombol Absen Datang --}}
-                <form action="{{ route('absen.datang') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-all">
-                        Absen Datang
-                    </button>
-                </form>
-
-                {{-- Status --}}
-                @if (session('datang'))
-                    <p class="text-green-600 mt-4 font-semibold">{{ session('datang') }}</p>
-                @endif
+        {{-- Cek apakah ada jadwal hari ini --}}
+        @if ($jadwals->isEmpty())
+            <p class="text-center text-gray-500">Tidak ada jadwal mengajar hari ini.</p>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach ($jadwals as $jadwal)
+                    <div
+                        class="flex justify-between items-center border-2 border-blue-300 bg-blue-100 rounded-2xl shadow-md p-5 hover:shadow-xl transition duration-200">
+                        <div>
+                            <p class="font-bold text-lg text-black">{{ $jadwal->mataPelajaran->nama_mapel ?? '-' }}</p>
+                            <p class="text-sm text-black">
+                                Jam {{ $jadwal->jamMulai->jam_mulai ?? '-' }} -
+                                {{ $jadwal->jamSelesai->jam_selesai ?? '-' }}
+                            </p>
+                            <p class="text-sm text-black">
+                                {{ $jadwal->kelas->nama_kelas ?? '-' }} - {{ $jadwal->ruang->nama_ruang ?? '-' }}
+                            </p>
+                        </div>
+                        <a href="{{ route('absen.hadiri', $jadwal->id) }}"
+                            class="bg-yellow-400 text-black font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition">
+                            Hadiri
+                        </a>
+                    </div>
+                @endforeach
             </div>
-
-            {{-- KOTAK ABSEN PULANG --}}
-            <div class="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center justify-center">
-                <h6 class="text-xl font-bold text-slate-700 mb-4">Absen Pulang</h6>
-
-                {{-- Info Guru --}}
-                <p class="text-slate-600 mb-2 text-sm">Nama: <span class="font-semibold">{{ Auth::user()->name }}</span></p>
-
-                {{-- Jam Sekarang --}}
-                <p class="text-slate-500 mb-4 text-sm">
-                    Waktu Sekarang: <span id="clockOut" class="font-semibold"></span>
-                </p>
-
-                {{-- Tombol Absen Pulang --}}
-                <form action="{{ route('absen.pulang') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-all">
-                        Absen Pulang
-                    </button>
-                </form>
-
-                {{-- Status --}}
-                @if (session('pulang'))
-                    <p class="text-blue-600 mt-4 font-semibold">{{ session('pulang') }}</p>
-                @endif
-            </div>
-
-        </div>
+        @endif
     </div>
-
-    {{-- SCRIPT JAM REALTIME --}}
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', { hour12: false });
-            document.getElementById('clockIn').textContent = time;
-            document.getElementById('clockOut').textContent = time;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
 @endsection

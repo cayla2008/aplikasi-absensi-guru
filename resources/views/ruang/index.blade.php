@@ -10,7 +10,7 @@
 
                 <div
                     class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
-                    <h6 class="text-lg font-bold">Table Ruang</h6>
+                    <h6 class="text-lg font-bold">Table Ruang Kelas</h6>
 
                     <!-- 🔹 Tombol Tambah Ruang -->
                     <a href="{{ route('ruang.create') }}"
@@ -32,7 +32,7 @@
                                 <tr>
                                     <th
                                         class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b text-xxs tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                        Nama Ruang</th>
+                                        Nama Ruang Kelas</th>
                                     <th
                                         class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b text-xxs tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                         Lokasi</th>
@@ -49,7 +49,7 @@
                                             <div class="flex px-2 py-1">
                                                 <div class="flex flex-col justify-center">
                                                     <h6 class="mb-0 text-sm leading-normal">
-                                                        {{ $ruang->nama_ruang }}
+                                                        {{ $ruang->kelas->nama_kelas }} - {{ $ruang->kelas->jurusan }}
                                                     </h6>
                                                 </div>
                                             </div>

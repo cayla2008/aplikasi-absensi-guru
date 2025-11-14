@@ -9,4 +9,6 @@ class Kelas extends Model
     protected $fillable = [
         "nama_kelas", "jurusan",
     ];
+
+    
 }

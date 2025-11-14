@@ -1,18 +1,18 @@
 <?php
 
+use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\GuruDashboardController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\JadwalGuruController;
+use App\Http\Controllers\JamController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MasterGuruController;
 use App\Http\Controllers\MasterUserController;
 use App\Http\Controllers\MataPelajaranController;
 use App\Http\Controllers\RuangController;
-use App\Http\Controllers\JamController;
 use App\Http\Controllers\TahunPelajaranController;
-use App\Http\Controllers\JadwalController;
-use App\Http\Controllers\AbsenController;
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,7 +86,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::put('/tahun_pelajaran/{id}/update', [TahunPelajaranController::class, 'update'])->name('tahun_pelajaran.update');
     Route::delete('/tahun_pelajaran/{id}', [TahunPelajaranController::class, 'destroy'])->name('tahun_pelajaran.destroy');
 
-
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/jadwal/tambah-jadwal', [JadwalController::class, 'create'])->name('jadwal.create');
     Route::get('/jadwal/detail-jadwal/{id}', [JadwalController::class, 'show'])->name('jadwal.show');
@@ -96,16 +95,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
 });
 
-
 // ============ GURU ROUTES ============
 Route::middleware(['auth', 'role:guru'])->prefix('guru')->group(function () {
-    
+
     Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('guru.dashboard');
 
-    
     Route::get('/guru/absen', [AbsenController::class, 'index'])->name('absen.index');
-    Route::post('/guru/absen/datang', [AbsenController::class, 'absenDatang'])->name('absen.datang');
-    Route::post('/guru/absen/pulang', [AbsenController::class, 'absenPulang'])->name('absen.pulang');
+    Route::get('/absen/{jadwal}/hadiri', [AbsenController::class, 'hadiri'])->name('absen.hadiri');
+    Route::get('/guru/absen/form/datang/{id}', [AbsenController::class, 'showAbsenDatang'])->name('absen.form.datang');
+    Route::get('/guru/absen/form/pulang/{id}', [AbsenController::class, 'showAbsenPulang'])->name('absen.form.pulang');
+    Route::get('/guru/jadwal', [JadwalGuruController::class, 'index'])->name('guru.jadwal.index');
 
 });
 

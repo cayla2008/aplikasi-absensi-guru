@@ -27,6 +27,12 @@ class TrJadwalMapel extends Model
         return $this->belongsTo(Kelas::class, 'kelas_id');
     }
 
+    public function ruang()
+    {
+        return $this->belongsTo(Ruang::class, 'ruang_id');
+    }
+
+
     public function mataPelajaran()
     {
         return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id');

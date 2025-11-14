@@ -16,22 +16,17 @@
 
                     {{-- Nama Ruang --}}
                     <div class="mb-4">
-                        <label for="nama_ruang" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700">
-                            Nama Ruang
-                        </label>
-                        <select name="nama_ruang" id="nama_ruang"
-                            class="focus:shadow-primary-outline text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white px-3 py-2 font-normal text-gray-700 outline-none transition-all focus:border-blue-500 focus:outline-none">
-                            <option value="">-- Pilih Nama Ruang --</option>
-                            <option value="Ruang Kelas 1" {{ $ruang->nama_ruang == 'Ruang Kelas 1' ? 'selected' : '' }}>
-                                Ruang Kelas 1</option>
-                            <option value="Ruang Kelas 2" {{ $ruang->nama_ruang == 'Ruang Kelas 2' ? 'selected' : '' }}>
-                                Ruang Kelas 2</option>
-                            <option value="Lab Komputer" {{ $ruang->nama_ruang == 'Lab Komputer' ? 'selected' : '' }}>Lab
-                                Komputer</option>
-                            <option value="Perpustakaan" {{ $ruang->nama_ruang == 'Perpustakaan' ? 'selected' : '' }}>
-                                Perpustakaan</option>
-                            <option value="Aula" {{ $ruang->nama_ruang == 'Aula' ? 'selected' : '' }}>Aula</option>
+                        <label for="kelas_id" class="block text-sm font-medium text-gray-700 mb-2">Pilih Ruang Kelas</label>
+                        <select name="kelas_id" id="kelas_id" class="border rounded w-full p-2">
+                            @foreach ($kelas as $k)
+                                <option value="{{ $k->id }}" {{ $ruang->kelas_id == $k->id ? 'selected' : '' }}>
+                                    {{ $k->nama_kelas }}
+                                </option>
+                            @endforeach
                         </select>
+                        @error('kelas_id')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Lokasi --}}

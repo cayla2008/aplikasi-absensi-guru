@@ -47,4 +47,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relasi ke model Guru
+     * Setiap user memiliki satu data guru (berdasarkan kolom user_id di tabel gurus)
+     */
+    public function guru()
+    {
+        return $this->hasOne(Guru::class, 'user_id');
+    }
 }

@@ -15,7 +15,7 @@
         <ul class="flex flex-col pl-0 mb-0">
 
             <li class="mt-0.5 w-full">
-                <a class="{{ request()->routeIs('dashboard') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                <a class="{{ request()->routeIs('dashboard.*') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
                     href="{{ route('guru.dashboard') }}">
                     <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
@@ -26,7 +26,7 @@
             </li>
 
             <li class="mt-0.5 w-full">
-                <a class="{{ request()->routeIs('absensi') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                <a class="{{ request()->routeIs('absen.*') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                     href="{{ route('absen.index') }}">
                     <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
@@ -37,8 +37,8 @@
             </li>
 
             <li class="mt-0.5 w-full">
-                <a class="{{ request()->routeIs('jadwal') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-                    href="#">
+                <a class="{{ request()->routeIs('guru.jadwal.*') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                    href="{{ route('guru.jadwal.index') }}">
                     <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                         <i class="relative top-0 text-sm leading-normal text-green-500 ni ni-single-copy-04"></i>
@@ -48,7 +48,7 @@
             </li>
 
             <li class="mt-0.5 w-full">
-                <a class="{{ request()->routeIs('report_absen') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
+                <a class="{{ request()->routeIs('report.*') ? 'bg-blue-500/13' : '' }} py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
                     href="#">
                     <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
